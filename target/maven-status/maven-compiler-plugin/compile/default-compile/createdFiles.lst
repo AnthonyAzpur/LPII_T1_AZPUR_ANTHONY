@@ -1,0 +1,7 @@
+com\cibertec\model\Pelicula.class
+com\cibertec\model\Alquiler.class
+com\cibertec\model\Cliente.class
+com\cibertec\model\DetalleAlquiler.class
+com\cibertec\model\DetalleAlquilerId.class
+com\cibertec\util\JPAUtil.class
+com\cibertec\App.class
