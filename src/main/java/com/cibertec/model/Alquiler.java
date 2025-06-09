@@ -1,9 +1,9 @@
 package com.cibertec.model;
 
 import jakarta.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -19,38 +19,69 @@ public class Alquiler {
     private Cliente cliente;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
+    private LocalDate fecha;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private EstadoAlquiler estado;
+
+    @Column(nullable = false)
+    private double total;
 
     @OneToMany(mappedBy = "alquiler", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetalleAlquiler> detalles = new ArrayList<>();
 
     public Alquiler() {}
 
-    public Alquiler(Cliente cliente, Date fecha) {
+    public Alquiler(Cliente cliente, LocalDate fecha, EstadoAlquiler estado, double total) {
         this.cliente = cliente;
+        this.fecha = fecha;
+        this.estado = estado;
+        this.total = total;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
-    public Alquiler(Cliente cliente, Date fecha, List<DetalleAlquiler> detalles) {
-        this.cliente = cliente;
-        this.fecha = fecha;
+    public EstadoAlquiler getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoAlquiler estado) {
+        this.estado = estado;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public List<DetalleAlquiler> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetalleAlquiler> detalles) {
         this.detalles = detalles;
-        detalles.forEach(d -> d.setAlquiler(this)); 
-    }
-
-    // Getters y Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public Cliente getCliente() { return cliente; }
-    public void setCliente(Cliente cliente) { this.cliente = cliente; }
-    public Date getFecha() { return fecha; }
-    public void setFecha(Date fecha) { this.fecha = fecha; }
-    public List<DetalleAlquiler> getDetalles() { return detalles; }
-    public void setDetalles(List<DetalleAlquiler> detalles) { 
-        this.detalles.clear();
-        this.detalles.addAll(detalles);
-        detalles.forEach(d -> d.setAlquiler(this));
     }
 
     public void addDetalle(DetalleAlquiler detalle) {
@@ -64,11 +95,6 @@ public class Alquiler {
     }
 
     @Override
-    public String toString() {
-        return "Alquiler{id=" + id + ", cliente=" + cliente + ", fecha=" + fecha + "}";
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Alquiler)) return false;
@@ -79,5 +105,16 @@ public class Alquiler {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Alquiler{" +
+                "id=" + id +
+                ", cliente=" + cliente +
+                ", fecha=" + fecha +
+                ", estado=" + estado +
+                ", total=" + total +
+                '}';
     }
 }
